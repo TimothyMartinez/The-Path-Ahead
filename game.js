@@ -59,6 +59,10 @@ const expGain = () => {
   player1.attack = player1.attack + (enemy.exp)
 }
 
+let player1 = { attack: 20, mp: 100, health: 100 }
+
+let enemy = { name: "Phantasm", attack: 8, health: 50, exp: 1 } 
+
 let combatEnd = () => {
   sleep(1000)
     console.log("")
@@ -83,7 +87,7 @@ const enemyAttack = () => {
   return Math.floor(Math.random()*enemy.attack) + 5
 }
 
-const bolt = () => {
+let bolt = () => {
   return Math.floor(Math.random()*30) + 20
 };
 
@@ -91,13 +95,9 @@ const primaryStrike = () => {
   return Math.floor(Math.random()*20) + 10
 };
 
-let player1 = { attack: 20, mp: 100, health: 100 }
-
-let enemy = { name: "Phantasm", attack: 8, health: 50, exp: 1 } 
-
 const combatPhase = () => {
-  console.log(`Player 1 HP:\n${player1.health}`)
-  console.log(`Player 1 MP:\n${player1.mp}`)
+  console.log(`Player 1 HP: ${player1.health}`)
+  console.log(`Player 1 MP: ${player1.mp}`)
   breakLine()
   if (player1.health >= 0 && enemy.health >= 0) {
     console.log(enemy)
@@ -153,18 +153,23 @@ const combatPhase = () => {
         let enemyA = enemyAttack()
         player1.health = player1.health - enemyA
         console.log(`the enemy has delt you ${enemyA} dmg`)
+        combatPhase()}
+      if (player1.health >= 100){
+        breakLine()
+        console.log("You are at your max HP")
         combatPhase()
-      }
+      } else {
       console.log("")
       console.log("")
       console.log( "A second wind, your vitality improves" );
       player1.health = player1.health + 50
-      player1.mp = player1.mp - 15
+      player1.mp = player1.mp - 30
       sleep(1000)
       let enemyA = enemyAttack()
       player1.health = player1.health - enemyA
       console.log(`the enemy has delt you ${enemyA} dmg`)
       combatPhase()
+      }
     break;
     default: 
       console.log( "You must not be fit for this." );
@@ -186,6 +191,7 @@ if (player1.health <= 0 ){
 
 
 const scenarioOne = () => {
+  breakLine()         
   console.log( "The Path Ahead" );
   console.log( "After a hard day you walk to your car when suddenly, a magic portal opens in front of you. What do you want to do?" );
   const sceneOne = attn.question( "Options:\n a: I'd rather not,\n b: maybe have a look,\n c: I'm already in,\n" );
@@ -261,8 +267,11 @@ const scenarioOne = () => {
       console.log("")
       console.log( "A mysterious bottle sits atop a shelf" );
       console.log("glowing ominously in the darkness")
+      console.log("Your mp increases")
+      player1.mp = player1.mp + 30
       if (player1.health <= 60) {
       player1.health = player1.health + 25 
+      console.log("Your health regenerates")
       console.log(player1.health)
       } else {scenarioTwo()}
       console.log(player1.health)
@@ -279,7 +288,7 @@ const scenarioOne = () => {
     break;
 
     default: 
-      console.log( "You must not be fit for this." );
+      console.log( "Choose again." );
       scenarioTwo()
     break;
   }
@@ -319,7 +328,7 @@ function scenarioThree() {
       sleep(4000)
       rest()
     default: 
-      console.log( "You must not be fit for this." );
+      console.log( "Something else?." );
       scenarioThree()
     break;
   }
@@ -345,8 +354,12 @@ function scenarioFour() {
       monk = attn.question( "Monkey:'Hello traveler. What brings you to this realm?'\n" );
       playerAnswer = monk
       sleep(2000)
-      console.log(`"${monk} you say?!"\n "Good Luck"`)
+      console.log(`"${monk} you say?!"\n "Good Luck!"`)
+      console.log("Your magic pawer grows")
       sleep(4000)
+      bolt = () => {
+        return Math.floor(Math.random()*30) + 40
+      };
       scenarioFive()
     break;
     case "b":
@@ -381,7 +394,7 @@ function scenarioFour() {
       console.log(`Your attack is now ${player1.attack}`)
       scenarioFive()
     default: 
-      console.log( "You must not be fit for this." );
+      console.log( "That is not a choice." );
       scenarioFour()
     break;
   }
@@ -425,7 +438,7 @@ function scenarioFive() {
       scenarioFive()
     break;
     default: 
-      console.log( "You must not be fit for this." );
+      console.log( "Choose wisely." );
       scenarioFive()
       break;
   }
@@ -449,6 +462,8 @@ function scenarioSix() {
   console.log("Disoriented")
   sleep(6000)
   console.log("Slowly, you regain consciousness")
+  hpBuff()
+  mpGain()
   console.log("")
   sleep(2000)
   console.log("You come to amidst the crashing of waves.")
@@ -529,7 +544,7 @@ function scenarioSix() {
       console.log(`Your attack is now ${player1.attack}`)
       scenarioFive()
     default: 
-      console.log( "You must not be fit for this." );
+      console.log( "Think again." );
       scenarioSix()
     break;
   }
@@ -574,23 +589,17 @@ function scenarioSeven() {
       console.log("")
       console.log("The Cave of Wonders")
       breakLine()
-      console.log("A murky cave stands before you\nA screach from the belly of some fiend perhaps")
+      console.log("A murky cave stands before you\n\"ROAR\"\nA screach from the belly of some fiend perhaps")
       sleep(2000)
       scenarioCaves()
     break;
     case "d":
-      console.log("")
-      console.log("")
-      console.log("Roaming about the ruined temple brings you a sense of solace")
-      console.log("A wonderfully carved stele catches your eye")
+      breakLine()
+      console.log("Your mouth waters as your eyes catch sight of some berries")
+      breakLine()
       sleep(2000)
-      console.log("You Gain Knowledge Of The Jaguar")
-      player1.attack = player1.attack + 5
-      console.log(`Your attack is now ${player1.attack}`)
-      scenarioFive()
-    default: 
-      console.log( "You must not be fit for this." );
-      scenarioSix()
+      console.log("Those berries were no good.\nYou Have Died Of Dissintery.")
+      gameOver()
     break;
   }
 }
