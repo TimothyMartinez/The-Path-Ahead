@@ -13,7 +13,7 @@ const attn = require('readline-sync');
 let option
 function sleep(milliseconds) {
   var start = new Date().getTime();
-  for (var i = 0; i < 1e8; i++) {
+  for (var i = 0; i < 1e7; i++) {
     if ((new Date().getTime() - start) > milliseconds){
       break;
     }
@@ -47,19 +47,21 @@ const gameOver = () => {
 }
 
 const hpBuff = () => {
-  player1.health = player1.health + 100
+  if (player1.health <= 100)
+  player1.health = player1.health + 20 /100
 }
 
 const mpGain = () => {
-  if (player1.mp >= 100)
+  if (player1.mp < 100)
   player1.mp = player1.mp + 25
 }
 
 const expGain = () => {
+  if ( player1.mp <= 100 )
   player1.attack = player1.attack + (enemy.exp)
 }
 
-let player1 = { attack: 20, mp: 100, health: 100 }
+let player1 = { attack: 20, mp: 100, health: 100 , magAtk: 40 }
 
 let enemy = { name: "Phantasm", attack: 8, health: 50, exp: 1 } 
 
@@ -79,20 +81,25 @@ let combatEnd = () => {
 
 const rest = () =>{
   if (player1.health <= 45) {
-  player1.health = player1.health + 50
+  hpBuff()
+  mpGain()
   }
 }
 
 const enemyAttack = () => {
+  if (player1.health <= 50, player1.health >= 70 ){
   return Math.floor(Math.random()*enemy.attack) + 5
+} else { 
+  console.log("Criit Hit!")
+  return Math.floor(Math.random()*enemy.attack) + 17 }
 }
 
 let bolt = () => {
-  return Math.floor(Math.random()*30) + 20
+  return Math.floor(Math.random()*player1.magAtk) + 27
 };
 
 const primaryStrike = () => {
-  return Math.floor(Math.random()*20) + 10
+  return Math.floor(Math.random()*player1.attack) + 18
 };
 
 const combatPhase = () => {
@@ -311,7 +318,7 @@ function scenarioThree() {
       console.log("glowing ominously in the darkness")
       if (player1.health <= 60){
       breakLine()
-      sleep()
+      sleep(1000)
       console.log("You pop it open and take a swig")
       player1.health = player1.health + 25
       scenarioThree() 
